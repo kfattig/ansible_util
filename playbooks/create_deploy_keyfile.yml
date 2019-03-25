@@ -1,0 +1,9 @@
+- name: create Tower_deploy keyfile
+  hosts: all
+  become: yes
+  become_user: "{{ oracle_user }}"
+  roles:
+  - role: weblogic_key 
+  vars:
+    key_file: "{{ key_file }}"
+    config_file: "{{ config_file }}"

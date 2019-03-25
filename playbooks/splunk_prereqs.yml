@@ -1,0 +1,50 @@
+- hosts: all
+  become: true
+  tasks:
+  - name: install required yum packages
+    yum:
+      name: "{{ yum_packages }}"
+      state: latest
+      update_cache: yes
+    vars:
+      yum_packages:
+      - rsync
+      - tar
+      - procps-ng
+      - wget
+      - net-tools
+      - curl
+      - sudo
+      - python2
+      - iputils 
+      - bind-utils
+      - ansible 
+      - python2-pip
+
+  - name: install required pip packages
+    pip:
+      name: "{{ pip_packages }}"
+      state: latest
+    vars:
+      pip_packages:
+      - requests
+
+  - name: create splunk user
+    user:
+      name: splunk
+      group: splunk
+      comment: ansible provisioned splunk app user
+
+  - name: create ansible user
+    user:
+      name: ansible
+      group: ansible
+      comment: ansible provisioned user
+
+  - name: create ansible group sudoers entry
+    lineinfile:
+      path: /etc/sudoers
+      state: present
+      regexp: '^%ansible\s'
+      line: '%ansible ALL=(ALL) NOPASSWD: ALL'
+   

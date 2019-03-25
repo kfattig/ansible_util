@@ -1,0 +1,10 @@
+- name: create Tower_deploy user
+  hosts: all
+  become: yes
+  become_user: "{{ oracle_user }}"
+  become_method: su
+  roles:
+  - role: weblogic_user 
+  vars:
+    create_user: True
+    update_memberships: True
